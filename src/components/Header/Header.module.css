@@ -1,0 +1,12 @@
+.navigation{
+  height: 396px;
+  backdrop-filter: blur(8.154845237731934px)
+}
+
+.moviesBackgroundPhoto{
+  width: 1260px;
+  height: 683px;
+  opacity: 0.3;
+  backdrop-filter: blur(8.154845237731934px);
+  background-color: var(--background-color);
+}
