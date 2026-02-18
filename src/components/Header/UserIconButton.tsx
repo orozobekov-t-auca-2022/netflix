@@ -13,7 +13,7 @@ function UserIconButton() {
         minHeight: '45px',
         px: '0',
         py: '0',
-        fontFamily: 'Montserrat',
+        fontFamily: 'Montserrat, sans-serif',
         fontWeight: 600,
         fontSize: '20px',
         lineHeight: '100%',

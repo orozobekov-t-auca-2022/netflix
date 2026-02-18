@@ -12,3 +12,7 @@ export interface MovieProps {
   genres: string[];
   id: number;
 }
+
+export type MoviesListProps = {
+  movies: MovieProps[];
+};

@@ -1,13 +1,14 @@
+import type { MoviesListProps } from '../../pages/MoviesList/type';
 import Count from './Count';
 import FilterBar from './FilterBar';
 import List from './List';
 
-function Movies() {
+function Movies({ movies }: MoviesListProps) {
   return (
     <div className="moviesList">
       <FilterBar />
-      <Count />
-      <List />
+      <Count count={movies.length} />
+      <List movies={movies} />
     </div>
   );
 }
