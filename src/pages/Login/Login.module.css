@@ -1,0 +1,6 @@
+.page{
+  width: 100%;
+  background-color: rgba(58, 58, 58, 1);
+  display: flex;
+  justify-content: center;
+}

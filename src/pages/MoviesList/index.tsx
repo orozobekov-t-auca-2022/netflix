@@ -1,9 +1,9 @@
-import Header from '../../components/Header';
 import Movies from '../../components/Movies';
 import styles from './MoviesList.module.css';
 import MovieMap from '../../assets/MovieMap.png';
 import { useEffect, useState } from 'react';
 import type { MoviesListProps } from './type';
+import HomeIntro from '../../components/HomeIntro';
 
 function MoviesList() {
   const [movies, setMovies] = useState<MoviesListProps['movies']>([]);
@@ -32,7 +32,7 @@ function MoviesList() {
           />
         </div>
         <div className={styles.container}>
-          <Header />
+          <HomeIntro />
           <Movies movies={movies} />
         </div>
       </div>

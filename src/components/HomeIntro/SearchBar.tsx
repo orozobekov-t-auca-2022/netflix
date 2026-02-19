@@ -11,19 +11,27 @@ function SearchBar() {
         sx={{
           maxWidth: '713px',
           width: '100%',
-          backgroundColor: 'rgba(50, 50, 50, 0.8)',
-          height: '57px',
-          borderRadius: '4px',
-          input: {
-            color: 'var(--primary-color)',
-            fontFamily: 'Montserrat, sans-serif',
+
+          '& .MuiOutlinedInput-root': {
+            height: '57px',
+            backgroundColor: 'rgba(50, 50, 50, 0.8)',
+            borderRadius: '4px',
+            alignItems: 'center',
+          },
+
+          '& .MuiInputBase-input': {
+            color: 'var(--text-color)',
             fontWeight: 400,
             fontSize: '20px',
-            lineHeight: '100%',
-            letterSpacing: '0px',
+            padding: '0 14px',
+          },
+
+          '& .MuiInputLabel-root': {
+            color: 'var(--text-color)',
           },
         }}
       />
+
       <SearchButton />
     </form>
   );
