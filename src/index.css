@@ -15,4 +15,5 @@
 
 body {
   color: var(--text-color);
+  background-color: rgba(35, 35, 35, 1);
 }

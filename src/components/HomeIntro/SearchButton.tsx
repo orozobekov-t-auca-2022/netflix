@@ -1,8 +1,9 @@
 import { Button } from '@mui/material';
 
-function SearchButton() {
+function SearchButton({ type }: { type?: 'submit' }) {
   return (
     <Button
+      type={type}
       variant="contained"
       sx={{
         width: '233px',

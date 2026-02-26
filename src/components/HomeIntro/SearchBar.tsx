@@ -1,9 +1,24 @@
 import { TextField } from '@mui/material';
 import SearchButton from './SearchButton';
+import { useState, type ChangeEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function SearchBar() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = (e: ChangeEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
   return (
-    <form style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}>
+    <form
+      style={{ display: 'flex', gap: '14px', flexWrap: 'wrap' }}
+      onSubmit={handleSubmit}
+    >
       <TextField
         type="text"
         label="What do you want to watch?"
@@ -30,9 +45,11 @@ function SearchBar() {
             color: 'var(--text-color)',
           },
         }}
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
       />
 
-      <SearchButton />
+      <SearchButton type="submit" />
     </form>
   );
 }

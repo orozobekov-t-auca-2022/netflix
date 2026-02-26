@@ -1,9 +1,39 @@
-import type { MoviesListProps } from '../../pages/MoviesList/type';
+import { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Count from './Count';
 import FilterBar from './FilterBar';
 import List from './List';
+import { fetchMovies } from '../../store/movies/moviesThunk';
+import {
+  selectMovies,
+  selectMoviesLoading,
+  selectMoviesError,
+} from '../../store/movies/moviesSlice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
-function Movies({ movies }: MoviesListProps) {
+function Movies() {
+  const dispatch = useAppDispatch();
+  const [searchParams] = useSearchParams();
+  const movies = useAppSelector(selectMovies);
+  const loading = useAppSelector(selectMoviesLoading);
+  const error = useAppSelector(selectMoviesError);
+
+  useEffect(() => {
+    const search = searchParams.get('search') || undefined;
+    const filter = searchParams.get('filter') || undefined;
+    const sortBy = searchParams.get('sortBy') || undefined;
+    const sortOrder = searchParams.get('sortOrder') || undefined;
+
+    dispatch(fetchMovies({ search, filter, sortBy, sortOrder }));
+  }, [dispatch, searchParams]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="moviesList">
       <FilterBar />
