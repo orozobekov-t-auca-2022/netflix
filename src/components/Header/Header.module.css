@@ -2,7 +2,8 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  position: absolute
+  position: absolute;
+  z-index: 10;
 }
 
 .logo {

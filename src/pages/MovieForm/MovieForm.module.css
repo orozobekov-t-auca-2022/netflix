@@ -1,0 +1,49 @@
+
+.buttons{
+  display: flex;
+  gap: 13px;
+}
+.movieFormContainer{
+  width: 976px;
+  height: 917px;
+  display: flex;
+  justify-content: center;
+  padding: 60px 0;
+}
+.movieForm{
+  width: 859px;
+  height: 917px;
+}
+.movieFormInputs{
+  display: flex;
+  gap: 30px;
+}
+
+.leftColumn{
+  width: 525px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px
+}
+
+.rightColumn{
+  width: 301px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px
+}
+
+.overviewInput{
+  width: 100%;
+  margin: 30px 0 60px 0;
+}
+
+.inputLabel{
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0.89px;
+  text-transform: uppercase;
+  color: var(--primary-color);
+}

@@ -1,0 +1,110 @@
+.container{
+  width: 100%;
+  max-width: 1083px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.movieDetails{
+  display: flex;
+  padding-top: 88px;
+}
+.movieDetailsPoster{
+  display: flex;
+  flex-direction: column;
+  gap: 62px;
+}
+.poster{
+  width: 324px;
+  height: 486px;
+}
+
+.movieDetailsHeader{
+  display: flex;
+  gap: 25px;
+  align-items: center;
+  color: var(--text-color);
+}
+.movieDetailsHeaderName{
+  font-family: "Montserrat", sans-serif;
+  font-weight: 300;
+  font-size: 40px;
+  line-height: 100%;
+  letter-spacing: 1px;
+  text-align: center;
+  text-transform: uppercase;
+}
+.movieDetailsHeaderVoteAverage{
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--text-color);
+  border-radius: 50%;
+}
+.movieDetailsHeaderVoteAverage span{
+  font-family: "Montserrat", sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.movieDetailsInfo {
+  width: 698px;
+}
+
+.genres{
+  margin-top: 4px;
+}
+
+.genres span{
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0px;
+  color: rgba(255, 255, 255, 1);
+  margin-top: 4px;
+}
+
+.movieDetailsDate{
+  display: flex;
+  gap: 51px;
+  color: var(--primary-color);
+  margin-top: 30px;
+}
+.movieDetailsDate span{
+  font-family: "Montserrat", sans-serif;
+  font-weight: 300;
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: 0px;
+}
+
+.overview{
+  margin: 30px 0;
+  height: 292px;
+}
+.overview p{
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0px;
+  color: rgba(255, 255, 255, 1);
+}
+
+
+.editAndDeleteWrapper{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.editAndDelete{
+  display: flex;
+  gap: 43px;
+}

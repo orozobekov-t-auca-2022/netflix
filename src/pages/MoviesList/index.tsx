@@ -1,26 +1,9 @@
 import Movies from '../../components/Movies';
 import styles from './MoviesList.module.css';
 import MovieMap from '../../assets/MovieMap.png';
-import { useEffect, useState } from 'react';
-import type { MoviesListProps } from './type';
 import HomeIntro from '../../components/HomeIntro';
 
 function MoviesList() {
-  const [movies, setMovies] = useState<MoviesListProps['movies']>([]);
-
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const response = await fetch(import.meta.env.VITE_API_KEY + '/movies');
-        const data = await response.json();
-        setMovies(data.data);
-      } catch (error) {
-        console.error('Error fetching movies:', error);
-      }
-    };
-    fetchMovies();
-  }, []);
-
   return (
     <>
       <div className={styles.page}>
@@ -33,7 +16,7 @@ function MoviesList() {
         </div>
         <div className={styles.container}>
           <HomeIntro />
-          <Movies movies={movies} />
+          <Movies />
         </div>
       </div>
     </>

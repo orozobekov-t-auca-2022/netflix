@@ -1,0 +1,42 @@
+.confirmContainer{
+  width: 686px;
+  height: 352px;
+  background-color: rgba(35, 35, 35, 1);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.confirmTitle{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 40px;
+  line-height: 100%;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 63px 0 37px 0;
+}
+.confirmText{
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0px;
+  color: var(--text-color);
+  margin-bottom: 52px;
+}
+.confirmCloseIcon{
+  font-size: 21px;
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  cursor: pointer;
+}
+.confirmContent{
+  width: 520px;
+  height: 100%;
+}
+.confirmButtonWrappper{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}

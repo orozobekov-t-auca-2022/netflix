@@ -38,3 +38,49 @@ export const fetchMovies = createAsyncThunk(
     }
   }
 );
+
+export const deleteMovie = createAsyncThunk(
+  'movies/deleteMovie',
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_KEY}/movies/${id}`,
+        {
+          method: 'DELETE',
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to delete movie');
+      }
+
+      return id;
+    } catch (error) {
+      return rejectWithValue(
+        error instanceof Error ? error.message : 'Unknown error'
+      );
+    }
+  }
+);
+
+export const fetchMovieById = createAsyncThunk(
+  'movies/fetchMovieById',
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_KEY}/movies/${id}`
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch movie details');
+      }
+
+      const data = await response.json();
+      return data.data;
+    } catch (error) {
+      return rejectWithValue(
+        error instanceof Error ? error.message : 'Unknown error'
+      );
+    }
+  }
+);

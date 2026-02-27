@@ -37,6 +37,14 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/:movieId/edit-movie"
+          element={
+            <PrivateRoute requiredRole="admin">
+              <MovieForm />
+            </PrivateRoute>
+          }
+        />
       </Routes>
       <Footer />
     </BrowserRouter>

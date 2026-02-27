@@ -1,8 +1,9 @@
 import { Button } from '@mui/material';
 
-function AddMovieButton() {
+function AddMovieButton({ onClick }: { onClick: () => void }) {
   return (
     <Button
+      onClick={onClick}
       variant="contained"
       startIcon={<span>+</span>}
       sx={{
@@ -21,6 +22,7 @@ function AddMovieButton() {
         letterSpacing: '0px',
         textAlign: 'right',
         textTransform: 'uppercase',
+        cursor: 'pointer',
       }}
     >
       add movie

@@ -1,0 +1,135 @@
+.card{
+  width: 322px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+  position: relative;
+  text-decoration: none;
+}
+.poster{
+  width: 100%;
+  height: 455px;
+}
+.info{
+  display: flex;
+  justify-content: space-between;
+}
+.title{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0px;
+  color: var(--text-color);
+}
+.yearContainer{
+  width: 66px;
+  height: 26px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.year{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0px;
+  text-align: center;
+  color: var(--text-color);
+}
+.genresContainer{
+  width: 100%;
+  text-align: left;
+}
+.genres{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0px;
+  color: var(--text-color);
+}
+.noMovies{
+  width: 100%;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--background-color);
+}
+.noMovies p{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0px;
+  color: var(--text-color);
+}
+.threeDots{
+  width: 36px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(42, 32, 45, 1);
+  border-radius: 50%;
+  gap: 3px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 16px;
+  left: 270px;
+}
+
+.threeDots span{
+  width: 4px;
+  height: 4px;
+  background-color: var(--text-color);
+  border-radius: 50%;
+}
+.tooltipContent{
+  width: 190px;
+  height: 111px;
+  position: relative;
+  background-color: rgba(35, 35, 35, 0.92);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.tooltipContent .closeIcon{
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  cursor: pointer;
+}
+.tooltipList{
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0px;
+  color: var(--text-color);
+  width: 100%;
+}
+.tooltipList li{
+  width: 100%;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  text-transform: capitalize;
+}
+.tooltipList li:hover{
+  cursor: pointer;
+  background-color: var(--primary-color);
+}
