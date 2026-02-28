@@ -1,9 +1,10 @@
 import { Button } from '@mui/material';
 
-function UserIconButton() {
+function UserIconButton({ onClick }: { onClick: () => void }) {
   return (
     <Button
       variant="contained"
+      onClick={onClick}
       sx={{
         backgroundColor: 'rgba(96, 96, 96, 0.68)',
         color: 'var(--primary-color)',

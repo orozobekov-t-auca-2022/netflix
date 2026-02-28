@@ -2,8 +2,12 @@
   list-style-type: none;
   display: flex;
   gap: 30px;
-  height: 62px;
+  min-height: 62px;
   align-items: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  scrollbar-width: thin;
 }
 .filterGenreBar li {
   font-family: 'Montserrat', sans-serif;
@@ -16,6 +20,7 @@
   height: 100%;
   display: flex;
   align-items: center;
+  flex-shrink: 0;
 }
 .filterGenreBar li a{
   height: 100%;
@@ -25,7 +30,7 @@
   text-decoration: none;
   color: var(--text-color);
 }
-.filterGenreBar li a:hover{
+.active{
   border-bottom: 4px solid var(--primary-color);
   line-height: 100%;
 }

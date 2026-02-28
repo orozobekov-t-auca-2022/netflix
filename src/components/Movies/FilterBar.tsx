@@ -1,23 +1,46 @@
+import { genres } from '../../constants/genres';
 import styles from './Movies.module.css';
+import { useSearchParams } from 'react-router-dom';
 
 function FilterBar() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const genresWithAll = ['All', ...genres];
+
+  const currentFilter = (searchParams.get('filter') || 'all').toLowerCase();
+
+  const handleGenreClick = (genre: string) => {
+    const nextParams = new URLSearchParams(searchParams);
+
+    if (genre.toLowerCase() === 'all') {
+      nextParams.delete('filter');
+    } else {
+      nextParams.set('filter', genre.toLowerCase());
+    }
+
+    setSearchParams(nextParams);
+  };
+
   return (
     <ul className={styles.filterGenreBar}>
-      <li>
-        <a href="#">All</a>
-      </li>
-      <li>
-        <a href="#">Documentary</a>
-      </li>
-      <li>
-        <a href="#">Comedy</a>
-      </li>
-      <li>
-        <a href="#">Horror</a>
-      </li>
-      <li>
-        <a href="#">Crime</a>
-      </li>
+      {genresWithAll.map((genre) => (
+        <li key={genre}>
+          <a
+            className={
+              currentFilter === genre.toLowerCase() ||
+              (genre === 'All' && !searchParams.get('filter'))
+                ? styles.active
+                : undefined
+            }
+            href="#"
+            onClick={(event) => {
+              event.preventDefault();
+              handleGenreClick(genre);
+            }}
+          >
+            {genre}
+          </a>
+        </li>
+      ))}
     </ul>
   );
 }

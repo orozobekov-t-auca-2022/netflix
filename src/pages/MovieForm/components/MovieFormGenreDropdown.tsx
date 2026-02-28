@@ -8,21 +8,7 @@ import {
   type SelectChangeEvent,
 } from '@mui/material';
 import styles from '../MovieForm.module.css';
-
-const genres = [
-  { value: 'Action' },
-  { value: 'Comedy' },
-  { value: 'Drama' },
-  { value: 'Horror' },
-  { value: 'Science Fiction' },
-  { value: 'Romance' },
-  { value: 'Adventure' },
-  { value: 'Family' },
-  { value: 'Animation' },
-  { value: 'Thriller' },
-  { value: 'Fantasy' },
-  { value: 'Mystery' },
-];
+import { genres } from '../../../constants/genres';
 
 interface MovieFormGenreDropdownProps {
   value: string[];
@@ -60,8 +46,7 @@ function MovieFormGenreDropdown({
             }
 
             return genres
-              .filter((genre) => selected.includes(genre.value))
-              .map((genre) => genre.value)
+              .filter((genre) => selected.includes(genre))
               .join(', ');
           }}
           sx={{
@@ -85,9 +70,9 @@ function MovieFormGenreDropdown({
           }}
         >
           {genres.map((genre) => (
-            <MenuItem key={genre.value} value={genre.value}>
-              <Checkbox checked={value.includes(genre.value)} />
-              <ListItemText primary={genre.value} />
+            <MenuItem key={genre} value={genre}>
+              <Checkbox checked={value.includes(genre)} />
+              <ListItemText primary={genre} />
             </MenuItem>
           ))}
         </Select>
