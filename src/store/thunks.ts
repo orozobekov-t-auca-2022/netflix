@@ -119,13 +119,16 @@ export const updateMovieThunk = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_KEY}/movies/`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id, ...movieData }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_KEY}/movies/${id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id, ...movieData }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error('Failed to update movie');

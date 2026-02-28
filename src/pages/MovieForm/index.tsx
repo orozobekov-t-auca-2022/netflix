@@ -10,6 +10,7 @@ import {
   addMovieThunk,
   fetchMovieById,
   fetchMoviesThunk,
+  updateMovieThunk,
 } from '../../store/thunks';
 import type { MovieFormData } from '../../types/movieForm';
 import { useAppDispatch } from '../../store/hooks';
@@ -85,7 +86,7 @@ function MovieForm({ mode }: { mode: 'create' | 'edit' }) {
     if (!data.poster_path.trim()) errors.poster_path = true;
     if (!data.release_date.trim()) errors.release_date = true;
     if (data.vote_average === 0) errors.vote_average = true;
-    if (!data.runtime.trim()) errors.runtime = true;
+    // if (!data.runtime === 0) errors.runtime = true;
     if (!data.overview.trim()) errors.overview = true;
 
     return errors;
@@ -101,14 +102,26 @@ function MovieForm({ mode }: { mode: 'create' | 'edit' }) {
     setRequiredMessage(hasErrors);
 
     if (!hasErrors) {
-      await dispatch(addMovieThunk(formData));
-      await dispatch(fetchMoviesThunk({})).unwrap();
-      console.log('Form submitted successfully:', formData);
-      resetFormData();
-      navigate('/', {
-        state: { showCreateSuccess: true },
-        replace: false,
-      });
+      if (mode === 'create') {
+        await dispatch(addMovieThunk(formData));
+        await dispatch(fetchMoviesThunk({})).unwrap();
+        console.log('Form submitted successfully:', formData);
+        resetFormData();
+        navigate('/', {
+          state: { showCreateSuccess: true },
+          replace: false,
+        });
+      } else if (mode === 'edit') {
+        await dispatch(
+          updateMovieThunk({ id: Number(movieId), movieData: formData })
+        );
+        await dispatch(fetchMoviesThunk({})).unwrap();
+        console.log('Form updated successfully:', formData);
+        navigate('/', {
+          state: { showEditSuccess: true },
+          replace: false,
+        });
+      }
     }
   };
 
