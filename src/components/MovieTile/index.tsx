@@ -9,7 +9,7 @@ import Info from './Info';
 import { useAuth } from '../../provider/useAuth';
 import ConfirmModal from '../common/ConfirmModal';
 import { useAppDispatch } from '../../store/hooks';
-import { deleteMovie, fetchMovies } from '../../store/movies/moviesThunk';
+import { deleteMovieThunk, fetchMoviesThunk } from '../../store/thunks';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 function MovieTile({ movie }: { movie: MovieProps }) {
@@ -28,13 +28,13 @@ function MovieTile({ movie }: { movie: MovieProps }) {
   };
 
   const handleConfirmDelete = async () => {
-    await dispatch(deleteMovie(id));
+    await dispatch(deleteMovieThunk(id));
     const search = searchParams.get('search') || undefined;
     const filter = searchParams.get('filter') || undefined;
     const sortBy = searchParams.get('sortBy') || undefined;
     const sortOrder = searchParams.get('sortOrder') || undefined;
 
-    await dispatch(fetchMovies({ search, filter, sortBy, sortOrder }));
+    await dispatch(fetchMoviesThunk({ search, filter, sortBy, sortOrder }));
     setIsConfirmOpen(false);
   };
 

@@ -2,7 +2,7 @@ import { useState, type ReactNode } from 'react';
 import type { AuthContextType, User } from '../types/user';
 import { AuthContext } from './AuthContext';
 import { useDispatch } from 'react-redux';
-import { clearAuth, setAuth } from '../store/auth/authSlice';
+import { clearAuth, setAuth } from '../store/userSlice';
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(() => {

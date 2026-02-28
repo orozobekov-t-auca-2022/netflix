@@ -14,8 +14,14 @@ const genres = [
   { value: 'Comedy' },
   { value: 'Drama' },
   { value: 'Horror' },
-  { value: 'Sci-Fi' },
+  { value: 'Science Fiction' },
   { value: 'Romance' },
+  { value: 'Adventure' },
+  { value: 'Family' },
+  { value: 'Animation' },
+  { value: 'Thriller' },
+  { value: 'Fantasy' },
+  { value: 'Mystery' },
 ];
 
 interface MovieFormGenreDropdownProps {

@@ -3,12 +3,12 @@ import { useSearchParams } from 'react-router-dom';
 import Count from './Count';
 import FilterBar from './FilterBar';
 import List from './List';
-import { fetchMovies } from '../../store/movies/moviesThunk';
+import { fetchMoviesThunk } from '../../store/thunks';
 import {
   selectMovies,
   selectMoviesLoading,
   selectMoviesError,
-} from '../../store/movies/moviesSlice';
+} from '../../store/moviesSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 function Movies() {
@@ -24,7 +24,7 @@ function Movies() {
     const sortBy = searchParams.get('sortBy') || undefined;
     const sortOrder = searchParams.get('sortOrder') || undefined;
 
-    dispatch(fetchMovies({ search, filter, sortBy, sortOrder }));
+    dispatch(fetchMoviesThunk({ search, filter, sortBy, sortOrder }));
   }, [dispatch, searchParams]);
 
   if (loading) {

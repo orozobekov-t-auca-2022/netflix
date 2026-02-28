@@ -1,12 +1,16 @@
 import { Alert, Button, Snackbar } from '@mui/material';
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import MovieFromInputField from './components/MovieFormInputField';
 import styles from './MovieForm.module.css';
 import MovieFormOverview from './components/MovieFormOverview';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import MovieFormGenreDropdown from './components/MovieFormGenreDropdown';
 import MovieFormInputDate from './components/MovieFormInputDate';
-import { createMovie, fetchMovies } from '../../store/movies/moviesThunk';
+import {
+  addMovieThunk,
+  fetchMovieById,
+  fetchMoviesThunk,
+} from '../../store/thunks';
 import type { MovieFormData } from '../../types/movieForm';
 import { useAppDispatch } from '../../store/hooks';
 
@@ -32,12 +36,44 @@ const createEmptyErrors = (): FieldErrors => ({
   genres: false,
 });
 
-function MovieForm() {
+function MovieForm({ mode }: { mode: 'create' | 'edit' }) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { movieId } = useParams();
+
   const [formData, setFormData] = useState<MovieFormData>(
     createEmptyFormData()
   );
+
+  useEffect(() => {
+    if (mode !== 'edit' || !movieId) return;
+
+    const loadMovieData = async () => {
+      try {
+        const movieData = await dispatch(
+          fetchMovieById(Number(movieId))
+        ).unwrap();
+        if (movieData) {
+          setFormData({
+            title: movieData.title,
+            poster_path: movieData.poster_path,
+            release_date: movieData.release_date,
+            vote_average: movieData.vote_average,
+            runtime: movieData.runtime,
+            overview: movieData.overview,
+            genres: movieData.genres,
+          });
+        } else {
+          console.error('Movie not found in store');
+        }
+      } catch (error) {
+        console.error('Error loading movie data:', error);
+      }
+    };
+
+    loadMovieData();
+  }, [mode, movieId, dispatch]);
+
   const [fieldErrors, setFieldErrors] =
     useState<FieldErrors>(createEmptyErrors());
   const [requiredMessage, setRequiredMessage] = useState<boolean>(false);
@@ -65,8 +101,8 @@ function MovieForm() {
     setRequiredMessage(hasErrors);
 
     if (!hasErrors) {
-      await dispatch(createMovie(formData));
-      await dispatch(fetchMovies({})).unwrap();
+      await dispatch(addMovieThunk(formData));
+      await dispatch(fetchMoviesThunk({})).unwrap();
       console.log('Form submitted successfully:', formData);
       resetFormData();
       navigate('/', {
@@ -86,7 +122,9 @@ function MovieForm() {
     <div className={styles.movieFormPage}>
       <div className={styles.movieFormContainer}>
         <form className={styles.movieForm} onSubmit={handleSubmit}>
-          <h2 className={styles.movieFormTitle}>Add New Movie</h2>
+          <h2 className={styles.movieFormTitle}>
+            {mode === 'create' ? 'Add New Movie' : 'Edit Movie'}
+          </h2>
           <div className={styles.movieFormInputs}>
             <div className={styles.leftColumn}>
               <div>

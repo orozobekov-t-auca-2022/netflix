@@ -1,3 +1,13 @@
+.confirmOverlay{
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+}
+
 .confirmContainer{
   width: 686px;
   height: 352px;

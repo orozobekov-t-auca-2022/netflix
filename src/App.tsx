@@ -33,7 +33,7 @@ function App() {
           path="/create-movie"
           element={
             <PrivateRoute>
-              <MovieForm />
+              <MovieForm mode="create" />
             </PrivateRoute>
           }
         />
@@ -41,7 +41,7 @@ function App() {
           path="/:movieId/edit-movie"
           element={
             <PrivateRoute requiredRole="admin">
-              <MovieForm />
+              <MovieForm mode="edit" />
             </PrivateRoute>
           }
         />

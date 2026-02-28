@@ -9,8 +9,8 @@ import { useAuth } from '../../provider/useAuth';
 import { useEffect, useState } from 'react';
 import ConfirmModal from '../../components/common/ConfirmModal';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { fetchMovieById } from '../../store/movies/moviesThunk';
-import { selectMovieById } from '../../store/movies/moviesSlice';
+import { deleteMovieThunk, fetchMovieById } from '../../store/thunks';
+import { selectMovieById } from '../../store/moviesSlice';
 
 function MovieDetails() {
   const [deleteClick, setDeleteClick] = useState(false);
@@ -76,7 +76,11 @@ function MovieDetails() {
         {deleteClick && (
           <ConfirmModal
             onClose={() => setDeleteClick(false)}
-            onConfirm={() => setDeleteClick(false)}
+            onConfirm={() => {
+              setDeleteClick(false);
+              dispatch(deleteMovieThunk(Number(movieId)));
+              navigate('/');
+            }}
           />
         )}
       </div>

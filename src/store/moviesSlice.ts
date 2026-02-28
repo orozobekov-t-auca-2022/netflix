@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { deleteMovie, fetchMovies } from './moviesThunk';
-import type { RootState } from '../store';
-import type { MovieProps } from '../../pages/MoviesList/type';
+import { deleteMovieThunk, fetchMoviesThunk } from './thunks';
+import type { RootState } from '.';
+import type { MovieProps } from '../pages/MoviesList/type';
 
 interface MoviesState {
   movies: MovieProps[];
@@ -21,27 +21,27 @@ const moviesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchMovies.pending, (state) => {
+      .addCase(fetchMoviesThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchMovies.fulfilled, (state, action) => {
+      .addCase(fetchMoviesThunk.fulfilled, (state, action) => {
         state.loading = false;
         state.movies = action.payload;
       })
-      .addCase(fetchMovies.rejected, (state, action) => {
+      .addCase(fetchMoviesThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = (action.payload as string) || 'Failed to fetch movies';
       })
-      .addCase(deleteMovie.pending, (state) => {
+      .addCase(deleteMovieThunk.pending, (state) => {
         state.error = null;
       })
-      .addCase(deleteMovie.fulfilled, (state, action) => {
+      .addCase(deleteMovieThunk.fulfilled, (state, action) => {
         state.movies = state.movies.filter(
           (movie) => movie.id !== action.payload
         );
       })
-      .addCase(deleteMovie.rejected, (state, action) => {
+      .addCase(deleteMovieThunk.rejected, (state, action) => {
         state.error = (action.payload as string) || 'Failed to delete movie';
       });
   },

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import type { MovieFormData } from '../../types/movieForm';
+import type { MovieFormData } from '../types/movieForm';
 
 interface FetchMoviesParams {
   search?: string;
@@ -8,7 +8,7 @@ interface FetchMoviesParams {
   sortOrder?: string;
 }
 
-export const fetchMovies = createAsyncThunk(
+export const fetchMoviesThunk = createAsyncThunk(
   'movies/fetchMovies',
   async (params: FetchMoviesParams = {}, { rejectWithValue }) => {
     try {
@@ -40,7 +40,7 @@ export const fetchMovies = createAsyncThunk(
   }
 );
 
-export const deleteMovie = createAsyncThunk(
+export const deleteMovieThunk = createAsyncThunk(
   'movies/deleteMovie',
   async (id: number, { rejectWithValue }) => {
     try {
@@ -86,7 +86,7 @@ export const fetchMovieById = createAsyncThunk(
   }
 );
 
-export const createMovie = createAsyncThunk(
+export const addMovieThunk = createAsyncThunk(
   'movies/createMovie',
   async (movieData: MovieFormData, { rejectWithValue }) => {
     try {
@@ -104,6 +104,88 @@ export const createMovie = createAsyncThunk(
 
       const data = await response.json();
       return data.data;
+    } catch (error) {
+      return rejectWithValue(
+        error instanceof Error ? error.message : 'Unknown error'
+      );
+    }
+  }
+);
+
+export const updateMovieThunk = createAsyncThunk(
+  'movies/updateMovie',
+  async (
+    { id, movieData }: { id: number; movieData: MovieFormData },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_KEY}/movies/`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id, ...movieData }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update movie');
+      }
+
+      const data = await response.json();
+      return data.data;
+    } catch (error) {
+      return rejectWithValue(
+        error instanceof Error ? error.message : 'Unknown error'
+      );
+    }
+  }
+);
+
+export const loginUserThunk = createAsyncThunk(
+  'auth/loginUser',
+  async (
+    { email, password }: { email: string; password: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_KEY}/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to login');
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return rejectWithValue(
+        error instanceof Error ? error.message : 'Unknown error'
+      );
+    }
+  }
+);
+
+export const getUserThunk = createAsyncThunk(
+  'auth/getUser',
+  async (token: string, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_KEY}/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch user data');
+      }
+
+      const data = await response.json();
+      return data;
     } catch (error) {
       return rejectWithValue(
         error instanceof Error ? error.message : 'Unknown error'

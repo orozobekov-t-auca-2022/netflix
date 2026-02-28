@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styles from './MovieTile.module.css';
 
 function TooltipContent({
@@ -10,6 +10,7 @@ function TooltipContent({
   onClose: () => void;
   onDelete: () => void;
 }) {
+  const navigate = useNavigate();
   return (
     <div className={styles.tooltipContent} onClick={(e) => e.stopPropagation()}>
       <p
@@ -22,17 +23,15 @@ function TooltipContent({
         ✕
       </p>
       <ul className={styles.tooltipList}>
-        <li>
-          <Link
-            to={`/${movieId}/edit-movie`}
-            onClick={(e) => {
-              e.stopPropagation();
-              onClose();
-            }}
-            style={{ textDecoration: 'none', color: 'var(--text-color)' }}
-          >
-            edit
-          </Link>
+        <li
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/${movieId}/edit-movie`);
+            onClose();
+          }}
+          style={{ textDecoration: 'none', color: 'var(--text-color)' }}
+        >
+          edit
         </li>
         <li
           onClick={(e) => {
