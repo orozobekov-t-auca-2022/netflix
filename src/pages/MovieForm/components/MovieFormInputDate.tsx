@@ -1,30 +1,37 @@
 import { TextField } from '@mui/material';
+import { useState } from 'react';
 import styles from '../MovieForm.module.css';
 
-function MovieFromInputField({
-  label,
-  placeholder,
-  required = false,
-  type = 'text',
-  inputProps,
-  value,
-  onChange,
-}: {
+interface MovieFormInputDateProps {
   label: string;
   placeholder: string;
   required?: boolean;
-  type?: 'text' | 'number' | 'date' | 'url';
-  inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
   value: string;
   onChange: (value: string) => void;
-}) {
+}
+
+function MovieFormInputDate({
+  label,
+  placeholder,
+  required = false,
+  value,
+  onChange,
+}: MovieFormInputDateProps) {
+  const [isFocused, setIsFocused] = useState(false);
+  const inputType: 'text' | 'date' =
+    isFocused || Boolean(value) ? 'date' : 'text';
+
   return (
     <div className={styles.inputField}>
       <span className={styles.inputLabel}>{label}</span>
       <TextField
-        type={type}
+        type={inputType}
         required={required}
+        value={value}
         placeholder={placeholder}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        onChange={(event) => onChange(event.target.value)}
         sx={{
           backgroundColor: 'rgba(50, 50, 50, 0.95)',
           borderRadius: '8px',
@@ -51,12 +58,9 @@ function MovieFromInputField({
             opacity: 1,
           },
         }}
-        inputProps={inputProps}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
       />
     </div>
   );
 }
 
-export default MovieFromInputField;
+export default MovieFormInputDate;

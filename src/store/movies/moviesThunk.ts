@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import type { MovieFormData } from '../../types/movieForm';
 
 interface FetchMoviesParams {
   search?: string;
@@ -73,6 +74,32 @@ export const fetchMovieById = createAsyncThunk(
 
       if (!response.ok) {
         throw new Error('Failed to fetch movie details');
+      }
+
+      const data = await response.json();
+      return data.data;
+    } catch (error) {
+      return rejectWithValue(
+        error instanceof Error ? error.message : 'Unknown error'
+      );
+    }
+  }
+);
+
+export const createMovie = createAsyncThunk(
+  'movies/createMovie',
+  async (movieData: MovieFormData, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_KEY}/movies`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(movieData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create movie');
       }
 
       const data = await response.json();

@@ -1,43 +1,93 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import {
+  Checkbox,
+  FormControl,
+  FormHelperText,
+  ListItemText,
+  MenuItem,
+  Select,
+  type SelectChangeEvent,
+} from '@mui/material';
 import styles from '../MovieForm.module.css';
 
 const genres = [
-  { value: 'action', label: 'Action' },
-  { value: 'comedy', label: 'Comedy' },
-  { value: 'drama', label: 'Drama' },
-  { value: 'horror', label: 'Horror' },
-  { value: 'sci-fi', label: 'Sci-Fi' },
-  { value: 'romance', label: 'Romance' },
+  { value: 'Action' },
+  { value: 'Comedy' },
+  { value: 'Drama' },
+  { value: 'Horror' },
+  { value: 'Sci-Fi' },
+  { value: 'Romance' },
 ];
 
 interface MovieFormGenreDropdownProps {
-  value: string;
-  onChange: (value: string) => void;
+  value: string[];
+  onChange: (value: string[]) => void;
+  error?: boolean;
 }
 
 function MovieFormGenreDropdown({
   value,
   onChange,
+  error = false,
 }: MovieFormGenreDropdownProps) {
+  const handleChange = (event: SelectChangeEvent<string[]>) => {
+    const selectedValue = event.target.value;
+    onChange(
+      typeof selectedValue === 'string'
+        ? selectedValue.split(',')
+        : selectedValue
+    );
+  };
+
   return (
-    <>
+    <div className={styles.inputField}>
       <span className={styles.inputLabel}>genre</span>
-      <FormControl fullWidth>
-        <InputLabel id="genre-label" className={styles.inputLabel}>
-          Genre
-        </InputLabel>
+      <FormControl error={error}>
         <Select
+          labelId="genre-label"
+          multiple
           value={value}
-          onChange={(event) => onChange(event.target.value as string)}
+          onChange={handleChange}
+          displayEmpty
+          renderValue={(selected) => {
+            if (selected.length === 0) {
+              return 'Select genre';
+            }
+
+            return genres
+              .filter((genre) => selected.includes(genre.value))
+              .map((genre) => genre.value)
+              .join(', ');
+          }}
+          sx={{
+            backgroundColor: 'rgba(50, 50, 50, 0.95)',
+            borderRadius: '4px',
+            color: '#fff',
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderColor: error ? 'var(--primary-color)' : '#555',
+            },
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+              borderColor: error ? 'var(--primary-color)' : '#888',
+            },
+            '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline':
+              {
+                borderColor: error ? 'var(--primary-color)' : '#fff',
+              },
+            '& .MuiSelect-icon': {
+              color: 'var(--primary-color)',
+              fontSize: '30px',
+            },
+          }}
         >
           {genres.map((genre) => (
             <MenuItem key={genre.value} value={genre.value}>
-              {genre.label}
+              <Checkbox checked={value.includes(genre.value)} />
+              <ListItemText primary={genre.value} />
             </MenuItem>
           ))}
         </Select>
+        {error && <FormHelperText>Select at least one genre</FormHelperText>}
       </FormControl>
-    </>
+    </div>
   );
 }
 
