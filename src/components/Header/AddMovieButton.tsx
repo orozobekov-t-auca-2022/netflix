@@ -5,6 +5,7 @@ function AddMovieButton({ onClick }: { onClick: () => void }) {
   if (!user) {
     return null;
   }
+
   return (
     <Button
       onClick={onClick}
