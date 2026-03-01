@@ -10,6 +10,7 @@ function FilterBar() {
 
   const handleGenreClick = (genre: string) => {
     const nextParams = new URLSearchParams(searchParams);
+    nextParams.delete('page');
 
     if (genre.toLowerCase() === 'all') {
       nextParams.delete('filter');

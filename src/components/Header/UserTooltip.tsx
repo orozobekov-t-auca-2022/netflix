@@ -15,7 +15,7 @@ function UserTooltip({
 
   if (storedUser) {
     try {
-      user = JSON.parse(storedUser) as User;
+      user = JSON.parse(storedUser);
     } catch {
       user = null;
     }

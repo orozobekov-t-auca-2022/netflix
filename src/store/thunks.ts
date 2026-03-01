@@ -1,11 +1,19 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { MovieFormData } from '../types/movieForm';
+import type { MovieProps } from '../pages/MoviesList/type';
 
 interface FetchMoviesParams {
   search?: string;
   filter?: string;
   sortBy?: string;
   sortOrder?: string;
+  offset?: number;
+  limit?: number;
+}
+
+interface FetchMoviesResponse {
+  data: MovieProps[];
+  filteredCount?: number;
 }
 
 export const fetchMoviesThunk = createAsyncThunk(
@@ -21,6 +29,12 @@ export const fetchMoviesThunk = createAsyncThunk(
       if (params.filter) queryParams.append('filter', params.filter);
       if (params.sortBy) queryParams.append('sortBy', params.sortBy);
       if (params.sortOrder) queryParams.append('sortOrder', params.sortOrder);
+      if (typeof params.offset === 'number') {
+        queryParams.append('offset', String(params.offset));
+      }
+      if (typeof params.limit === 'number') {
+        queryParams.append('limit', String(params.limit));
+      }
 
       const url = `${import.meta.env.VITE_API_KEY}/movies${
         queryParams.toString() ? `?${queryParams.toString()}` : ''
@@ -30,8 +44,12 @@ export const fetchMoviesThunk = createAsyncThunk(
       if (!response.ok) {
         throw new Error('Failed to fetch movies');
       }
-      const data = await response.json();
-      return data.data;
+      const data: FetchMoviesResponse = await response.json();
+
+      return {
+        movies: data.data,
+        filteredCount: data.filteredCount,
+      };
     } catch (error) {
       return rejectWithValue(
         error instanceof Error ? error.message : 'Unknown error'

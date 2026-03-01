@@ -60,6 +60,12 @@
   gap: 51px;
   margin-bottom: 73px;
 }
+.pagination{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 73px;
+}
 .card{
   width: 322px;
   display: flex;

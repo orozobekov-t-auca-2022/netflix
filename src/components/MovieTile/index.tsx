@@ -12,6 +12,8 @@ import { useAppDispatch } from '../../store/hooks';
 import { deleteMovieThunk, fetchMoviesThunk } from '../../store/thunks';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
+const MOVIES_PER_PAGE = 10;
+
 function MovieTile({ movie }: { movie: MovieProps }) {
   const { id, title, release_date, genres, poster_path } = movie;
   const year = new Date(release_date).getFullYear();
@@ -33,8 +35,23 @@ function MovieTile({ movie }: { movie: MovieProps }) {
     const filter = searchParams.get('filter') || undefined;
     const sortBy = searchParams.get('sortBy') || undefined;
     const sortOrder = searchParams.get('sortOrder') || undefined;
+    const pageFromUrl = Number(searchParams.get('page') || '1');
+    const currentPage =
+      Number.isFinite(pageFromUrl) && pageFromUrl > 0
+        ? Math.floor(pageFromUrl)
+        : 1;
+    const offset = (currentPage - 1) * MOVIES_PER_PAGE;
 
-    await dispatch(fetchMoviesThunk({ search, filter, sortBy, sortOrder }));
+    await dispatch(
+      fetchMoviesThunk({
+        search,
+        filter,
+        sortBy,
+        sortOrder,
+        offset,
+        limit: MOVIES_PER_PAGE,
+      })
+    );
     setIsConfirmOpen(false);
   };
 

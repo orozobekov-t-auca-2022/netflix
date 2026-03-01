@@ -7,12 +7,14 @@ interface MoviesState {
   movies: MovieProps[];
   loading: boolean;
   error: string | null;
+  filteredCount?: number;
 }
 
 const initialState: MoviesState = {
   movies: [],
   loading: false,
   error: null,
+  filteredCount: undefined,
 };
 
 const moviesSlice = createSlice({
@@ -27,7 +29,8 @@ const moviesSlice = createSlice({
       })
       .addCase(fetchMoviesThunk.fulfilled, (state, action) => {
         state.loading = false;
-        state.movies = action.payload;
+        state.movies = action.payload.movies;
+        state.filteredCount = action.payload.filteredCount;
       })
       .addCase(fetchMoviesThunk.rejected, (state, action) => {
         state.loading = false;
@@ -50,6 +53,8 @@ const moviesSlice = createSlice({
 export default moviesSlice.reducer;
 
 export const selectMovies = (state: RootState) => state.movies.movies;
+export const selectMoviesFilteredCount = (state: RootState) =>
+  state.movies.filteredCount;
 export const selectMoviesLoading = (state: RootState) => state.movies.loading;
 export const selectMoviesError = (state: RootState) => state.movies.error;
 export const selectMovieById = (state: RootState, id: number) =>
