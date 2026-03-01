@@ -7,21 +7,29 @@ function MovieFormOverview({
   type = 'text',
   value,
   onChange,
+  error = false,
+  helperText = '',
 }: {
   placeholder?: string;
   required?: boolean;
   type?: string;
   value: string;
   onChange: (value: string) => void;
+  error?: boolean;
+  helperText?: string;
 }) {
   return (
     <div className={styles.inputField}>
-      <span className={styles.inputLabel}>overview</span>
+      <div>
+        <span className={styles.inputLabel}>overview</span>
+        {error && <span className={styles.error}> {helperText}</span>}
+      </div>
       <TextField
         placeholder={placeholder}
         required={required}
         type={type}
         value={value}
+        error={error}
         onChange={(event) => onChange(event.target.value)}
         multiline
         minRows={6}

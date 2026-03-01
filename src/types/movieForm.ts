@@ -3,7 +3,7 @@ export interface MovieFormData {
   poster_path: string;
   release_date: string;
   vote_average: number;
-  runtime: string;
+  runtime: number;
   overview: string;
   genres: string[];
 }

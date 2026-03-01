@@ -1,4 +1,4 @@
-import { Alert, Button, Snackbar } from '@mui/material';
+import { Button } from '@mui/material';
 import { useEffect, useState, type FormEvent } from 'react';
 import MovieFromInputField from './components/MovieFormInputField';
 import styles from './MovieForm.module.css';
@@ -20,21 +20,21 @@ const createEmptyFormData = (): MovieFormData => ({
   poster_path: '',
   release_date: '',
   vote_average: 0,
-  runtime: '',
+  runtime: 0,
   overview: '',
   genres: [],
 });
 
-type FieldErrors = Record<keyof MovieFormData, boolean>;
+type FieldErrorMessages = Record<keyof MovieFormData, string>;
 
-const createEmptyErrors = (): FieldErrors => ({
-  title: false,
-  poster_path: false,
-  release_date: false,
-  vote_average: false,
-  runtime: false,
-  overview: false,
-  genres: false,
+const createEmptyErrors = (): FieldErrorMessages => ({
+  title: '',
+  poster_path: '',
+  release_date: '',
+  vote_average: '',
+  runtime: '',
+  overview: '',
+  genres: '',
 });
 
 function MovieForm({ mode }: { mode: 'create' | 'edit' }) {
@@ -45,6 +45,7 @@ function MovieForm({ mode }: { mode: 'create' | 'edit' }) {
   const [formData, setFormData] = useState<MovieFormData>(
     createEmptyFormData()
   );
+  const [backup, setBackup] = useState<MovieFormData>(createEmptyFormData());
 
   useEffect(() => {
     if (mode !== 'edit' || !movieId) return;
@@ -64,6 +65,7 @@ function MovieForm({ mode }: { mode: 'create' | 'edit' }) {
             overview: movieData.overview,
             genres: movieData.genres,
           });
+          setBackup({ ...movieData });
         } else {
           console.error('Movie not found in store');
         }
@@ -76,36 +78,47 @@ function MovieForm({ mode }: { mode: 'create' | 'edit' }) {
   }, [mode, movieId, dispatch]);
 
   const [fieldErrors, setFieldErrors] =
-    useState<FieldErrors>(createEmptyErrors());
-  const [requiredMessage, setRequiredMessage] = useState<boolean>(false);
+    useState<FieldErrorMessages>(createEmptyErrors());
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const validateForm = (data: MovieFormData): FieldErrors => {
-    const errors: FieldErrors = createEmptyErrors();
+  const validateForm = (data: MovieFormData): FieldErrorMessages => {
+    const errors: FieldErrorMessages = createEmptyErrors();
 
-    if (!data.title.trim()) errors.title = true;
-    if (!data.poster_path.trim()) errors.poster_path = true;
-    if (!data.release_date.trim()) errors.release_date = true;
-    if (data.vote_average === 0) errors.vote_average = true;
-    // if (!data.runtime === 0) errors.runtime = true;
-    if (!data.overview.trim()) errors.overview = true;
+    if (!data.title.trim()) errors.title = 'Title is required';
+    if (!data.poster_path.trim()) errors.poster_path = 'Poster URL is required';
+    if (!data.release_date.trim()) {
+      errors.release_date = 'Release date is required';
+    }
+    if (
+      !Number.isFinite(data.vote_average) ||
+      data.vote_average <= 0 ||
+      data.vote_average > 10
+    ) {
+      errors.vote_average =
+        'Rating must be greater than 0 and less than or equal to 10';
+    }
+    if (!Number.isFinite(data.runtime) || data.runtime <= 0) {
+      errors.runtime = 'Runtime must be greater than 0';
+    }
+    if (!data.overview.trim()) errors.overview = 'Overview is required';
+    if (!data.genres.length) errors.genres = 'Select at least one genre';
 
     return errors;
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsSubmitted(true);
 
     const errors = validateForm(formData);
     setFieldErrors(errors);
 
     const hasErrors = Object.values(errors).some((error) => error);
-    setRequiredMessage(hasErrors);
 
     if (!hasErrors) {
       if (mode === 'create') {
         await dispatch(addMovieThunk(formData));
         await dispatch(fetchMoviesThunk({})).unwrap();
-        console.log('Form submitted successfully:', formData);
         resetFormData();
         navigate('/', {
           state: { showCreateSuccess: true },
@@ -116,7 +129,6 @@ function MovieForm({ mode }: { mode: 'create' | 'edit' }) {
           updateMovieThunk({ id: Number(movieId), movieData: formData })
         );
         await dispatch(fetchMoviesThunk({})).unwrap();
-        console.log('Form updated successfully:', formData);
         navigate('/', {
           state: { showEditSuccess: true },
           replace: false,
@@ -126,9 +138,15 @@ function MovieForm({ mode }: { mode: 'create' | 'edit' }) {
   };
 
   const resetFormData = () => {
-    setFormData(createEmptyFormData());
-    setFieldErrors(createEmptyErrors());
-    setRequiredMessage(false);
+    if (mode === 'create') {
+      setFormData(createEmptyFormData());
+      setFieldErrors(createEmptyErrors());
+      setIsSubmitted(false);
+    } else if (mode === 'edit') {
+      setFormData(backup);
+      setFieldErrors(createEmptyErrors());
+      setIsSubmitted(false);
+    }
   };
 
   return (
@@ -146,9 +164,14 @@ function MovieForm({ mode }: { mode: 'create' | 'edit' }) {
                   placeholder="Movie title"
                   type="text"
                   value={formData.title}
-                  onChange={(value) =>
-                    setFormData({ ...formData, title: value })
-                  }
+                  error={isSubmitted && !!fieldErrors.title}
+                  helperText={isSubmitted ? fieldErrors.title : ''}
+                  onChange={(value) => {
+                    setFormData({ ...formData, title: value });
+                    if (fieldErrors.title) {
+                      setFieldErrors({ ...fieldErrors, title: '' });
+                    }
+                  }}
                 />
               </div>
               <div>
@@ -157,9 +180,14 @@ function MovieForm({ mode }: { mode: 'create' | 'edit' }) {
                   placeholder="https://"
                   type="url"
                   value={formData.poster_path}
-                  onChange={(value) =>
-                    setFormData({ ...formData, poster_path: value })
-                  }
+                  error={isSubmitted && !!fieldErrors.poster_path}
+                  helperText={isSubmitted ? fieldErrors.poster_path : ''}
+                  onChange={(value) => {
+                    setFormData({ ...formData, poster_path: value });
+                    if (fieldErrors.poster_path) {
+                      setFieldErrors({ ...fieldErrors, poster_path: '' });
+                    }
+                  }}
                 />
               </div>
               <div>
@@ -168,10 +196,11 @@ function MovieForm({ mode }: { mode: 'create' | 'edit' }) {
                   onChange={(selectedGenres) => {
                     setFormData({ ...formData, genres: selectedGenres });
                     if (selectedGenres.length > 0) {
-                      setFieldErrors({ ...fieldErrors, genres: false });
+                      setFieldErrors({ ...fieldErrors, genres: '' });
                     }
                   }}
-                  error={fieldErrors.genres}
+                  error={isSubmitted && !!fieldErrors.genres}
+                  helperText={isSubmitted ? fieldErrors.genres : ''}
                 />
               </div>
             </div>
@@ -181,9 +210,14 @@ function MovieForm({ mode }: { mode: 'create' | 'edit' }) {
                   label="release date"
                   placeholder="Select Date"
                   value={formData.release_date}
-                  onChange={(value) =>
-                    setFormData({ ...formData, release_date: value })
-                  }
+                  error={isSubmitted && !!fieldErrors.release_date}
+                  helperText={isSubmitted ? fieldErrors.release_date : ''}
+                  onChange={(value) => {
+                    setFormData({ ...formData, release_date: value });
+                    if (fieldErrors.release_date) {
+                      setFieldErrors({ ...fieldErrors, release_date: '' });
+                    }
+                  }}
                 />
               </div>
               <div>
@@ -191,14 +225,19 @@ function MovieForm({ mode }: { mode: 'create' | 'edit' }) {
                   label="rating"
                   placeholder="7.8"
                   type="number"
-                  inputProps={{ min: 0, max: 10, step: 0.1 }}
+                  // inputProps={{ min: 0.1, max: 10, step: 0.1 }}
                   value={String(formData.vote_average)}
-                  onChange={(value) =>
+                  error={isSubmitted && !!fieldErrors.vote_average}
+                  helperText={isSubmitted ? fieldErrors.vote_average : ''}
+                  onChange={(value) => {
                     setFormData({
                       ...formData,
                       vote_average: parseFloat(value) || 0,
-                    })
-                  }
+                    });
+                    if (fieldErrors.vote_average) {
+                      setFieldErrors({ ...fieldErrors, vote_average: '' });
+                    }
+                  }}
                 />
               </div>
               <div>
@@ -206,10 +245,15 @@ function MovieForm({ mode }: { mode: 'create' | 'edit' }) {
                   label="runtime"
                   placeholder="minutes"
                   type="number"
-                  value={formData.runtime}
-                  onChange={(value) =>
-                    setFormData({ ...formData, runtime: value })
-                  }
+                  value={String(formData.runtime)}
+                  error={isSubmitted && !!fieldErrors.runtime}
+                  helperText={isSubmitted ? fieldErrors.runtime : ''}
+                  onChange={(value) => {
+                    setFormData({ ...formData, runtime: Number(value) || 0 });
+                    if (fieldErrors.runtime) {
+                      setFieldErrors({ ...fieldErrors, runtime: '' });
+                    }
+                  }}
                 />
               </div>
             </div>
@@ -219,9 +263,14 @@ function MovieForm({ mode }: { mode: 'create' | 'edit' }) {
               placeholder="Movie description"
               type="text"
               value={formData.overview}
-              onChange={(value) =>
-                setFormData({ ...formData, overview: value })
-              }
+              error={isSubmitted && !!fieldErrors.overview}
+              helperText={isSubmitted ? fieldErrors.overview : ''}
+              onChange={(value) => {
+                setFormData({ ...formData, overview: value });
+                if (fieldErrors.overview) {
+                  setFieldErrors({ ...fieldErrors, overview: '' });
+                }
+              }}
             />
           </div>
           <div className={styles.buttonsWrapper}>
@@ -263,20 +312,6 @@ function MovieForm({ mode }: { mode: 'create' | 'edit' }) {
           </p>
         </form>
       </div>
-      <Snackbar
-        open={requiredMessage}
-        autoHideDuration={2500}
-        onClose={() => setRequiredMessage(false)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        <Alert
-          severity="error"
-          variant="filled"
-          onClose={() => setRequiredMessage(false)}
-        >
-          ALL FIELDS ARE REQUIRED
-        </Alert>
-      </Snackbar>
     </div>
   );
 }

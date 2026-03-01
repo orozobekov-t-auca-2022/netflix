@@ -1,7 +1,6 @@
 import {
   Checkbox,
   FormControl,
-  FormHelperText,
   ListItemText,
   MenuItem,
   Select,
@@ -14,12 +13,14 @@ interface MovieFormGenreDropdownProps {
   value: string[];
   onChange: (value: string[]) => void;
   error?: boolean;
+  helperText?: string;
 }
 
 function MovieFormGenreDropdown({
   value,
   onChange,
   error = false,
+  helperText = '',
 }: MovieFormGenreDropdownProps) {
   const handleChange = (event: SelectChangeEvent<string[]>) => {
     const selectedValue = event.target.value;
@@ -32,7 +33,10 @@ function MovieFormGenreDropdown({
 
   return (
     <div className={styles.inputField}>
-      <span className={styles.inputLabel}>genre</span>
+      <div>
+        <span className={styles.inputLabel}>genre</span>
+        {error && <span className={styles.error}> {helperText}</span>}
+      </div>
       <FormControl error={error}>
         <Select
           labelId="genre-label"
@@ -76,7 +80,6 @@ function MovieFormGenreDropdown({
             </MenuItem>
           ))}
         </Select>
-        {error && <FormHelperText>Select at least one genre</FormHelperText>}
       </FormControl>
     </div>
   );

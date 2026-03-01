@@ -83,3 +83,10 @@
   display: flex;
   justify-content: flex-end;
 }
+
+.error{
+  color: rgba(255, 45, 85, 1);
+  font-weight: 400;
+  font-size: 12px;
+  text-transform: lowercase;
+}

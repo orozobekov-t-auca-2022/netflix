@@ -9,6 +9,8 @@ function MovieFromInputField({
   inputProps,
   value,
   onChange,
+  error = false,
+  helperText = '',
 }: {
   label: string;
   placeholder: string;
@@ -17,10 +19,15 @@ function MovieFromInputField({
   inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
   value: string;
   onChange: (value: string) => void;
+  error?: boolean;
+  helperText?: string;
 }) {
   return (
     <div className={styles.inputField}>
-      <span className={styles.inputLabel}>{label}</span>
+      <div>
+        <span className={styles.inputLabel}>{label}</span>
+        {error && <span className={styles.error}> {helperText}</span>}
+      </div>
       <TextField
         type={type}
         required={required}
@@ -53,6 +60,7 @@ function MovieFromInputField({
         }}
         inputProps={inputProps}
         value={value}
+        error={error}
         onChange={(e) => onChange(e.target.value)}
       />
     </div>

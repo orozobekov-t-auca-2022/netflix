@@ -8,6 +8,8 @@ interface MovieFormInputDateProps {
   required?: boolean;
   value: string;
   onChange: (value: string) => void;
+  error?: boolean;
+  helperText?: string;
 }
 
 function MovieFormInputDate({
@@ -16,6 +18,8 @@ function MovieFormInputDate({
   required = false,
   value,
   onChange,
+  error = false,
+  helperText = '',
 }: MovieFormInputDateProps) {
   const [isFocused, setIsFocused] = useState(false);
   const inputType: 'text' | 'date' =
@@ -23,7 +27,10 @@ function MovieFormInputDate({
 
   return (
     <div className={styles.inputField}>
-      <span className={styles.inputLabel}>{label}</span>
+      <div>
+        <span className={styles.inputLabel}>{label}</span>
+        {error && <span className={styles.error}> {helperText}</span>}
+      </div>
       <TextField
         type={inputType}
         required={required}
@@ -32,6 +39,7 @@ function MovieFormInputDate({
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         onChange={(event) => onChange(event.target.value)}
+        error={error}
         sx={{
           backgroundColor: 'rgba(50, 50, 50, 0.95)',
           borderRadius: '8px',
