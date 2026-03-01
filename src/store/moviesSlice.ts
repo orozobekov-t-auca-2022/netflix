@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { deleteMovieThunk, fetchMoviesThunk } from './thunks';
+import { deleteMovieThunk, fetchMovieById, fetchMoviesThunk } from './thunks';
 import type { RootState } from '.';
 import type { MovieProps } from '../pages/MoviesList/type';
 
@@ -35,6 +35,28 @@ const moviesSlice = createSlice({
       .addCase(fetchMoviesThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = (action.payload as string) || 'Failed to fetch movies';
+      })
+      .addCase(fetchMovieById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchMovieById.fulfilled, (state, action) => {
+        state.loading = false;
+        const movie = action.payload;
+        const existingIndex = state.movies.findIndex(
+          (item) => item.id === movie.id
+        );
+
+        if (existingIndex >= 0) {
+          state.movies[existingIndex] = movie;
+        } else {
+          state.movies.push(movie);
+        }
+      })
+      .addCase(fetchMovieById.rejected, (state, action) => {
+        state.loading = false;
+        state.error =
+          (action.payload as string) || 'Failed to fetch movie details';
       })
       .addCase(deleteMovieThunk.pending, (state) => {
         state.error = null;

@@ -1,6 +1,10 @@
 import { Button } from '@mui/material';
 
 function AddMovieButton({ onClick }: { onClick: () => void }) {
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  if (!user) {
+    return null;
+  }
   return (
     <Button
       onClick={onClick}

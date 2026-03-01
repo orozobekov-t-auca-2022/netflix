@@ -1,6 +1,11 @@
 import { Button } from '@mui/material';
 
 function UserIconButton({ onClick }: { onClick: () => void }) {
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  if (!user) {
+    return null;
+  }
+
   return (
     <Button
       variant="contained"
@@ -24,7 +29,9 @@ function UserIconButton({ onClick }: { onClick: () => void }) {
         borderRadius: '50%',
       }}
     >
-      J
+      {user !== null && user !== undefined && user.name
+        ? user.name.charAt(0).toUpperCase()
+        : 'U'}
     </Button>
   );
 }

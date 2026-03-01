@@ -17,6 +17,7 @@
   align-items: center;
   width: 1080px;
   margin: 16px 0;
+  position: relative;
 }
 
 .netflix{
@@ -44,9 +45,8 @@
 .tooltipContent{
   width: 190px;
   height: 111px;
-  position: fixed;
+  position: absolute;
   top: 65px;
-  margin-left: 40px;
   background-color: rgba(35, 35, 35, 0.92);
   border-radius: 8px;
   display: flex;

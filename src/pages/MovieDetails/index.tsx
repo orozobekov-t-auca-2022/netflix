@@ -23,6 +23,7 @@ function MovieDetails() {
     selectMovieById(state, Number(movieId))
   );
   const loading = useAppSelector((state) => state.movies.loading);
+  const error = useAppSelector((state) => state.movies.error);
 
   useEffect(() => {
     if (movieId && !movie) {
@@ -30,8 +31,16 @@ function MovieDetails() {
     }
   }, [dispatch, movieId, movie]);
 
-  if (loading || !movie) {
+  if (loading) {
     return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!movie) {
+    return <div>Movie not found</div>;
   }
 
   const goBack = () => {
