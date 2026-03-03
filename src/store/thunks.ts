@@ -14,26 +14,27 @@ interface FetchMoviesParams {
 interface FetchMoviesResponse {
   data: MovieProps[];
   filteredCount?: number;
+  totalAmount?: number;
 }
 
 export const fetchMoviesThunk = createAsyncThunk(
   'movies/fetchMovies',
   async (params: FetchMoviesParams = {}, { rejectWithValue }) => {
     try {
+      const offset = typeof params.offset === 'number' ? params.offset : 0;
+      const limit = typeof params.limit === 'number' ? params.limit : 10;
       const queryParams = new URLSearchParams();
 
-      if (params.search) {
-        queryParams.append('search', params.search);
-        queryParams.append('searchBy', 'title');
-      }
       if (params.filter) queryParams.append('filter', params.filter);
       if (params.sortBy) queryParams.append('sortBy', params.sortBy);
       if (params.sortOrder) queryParams.append('sortOrder', params.sortOrder);
-      if (typeof params.offset === 'number') {
-        queryParams.append('offset', String(params.offset));
-      }
-      if (typeof params.limit === 'number') {
-        queryParams.append('limit', String(params.limit));
+
+      if (params.search) {
+        queryParams.append('offset', '0');
+        queryParams.append('limit', '1000');
+      } else {
+        queryParams.append('offset', String(offset));
+        queryParams.append('limit', String(limit));
       }
 
       const url = `${import.meta.env.VITE_API_KEY}/movies${
@@ -46,9 +47,28 @@ export const fetchMoviesThunk = createAsyncThunk(
       }
       const data: FetchMoviesResponse = await response.json();
 
+      if (params.search) {
+        const normalizedSearch = params.search.toLowerCase();
+        const filteredMovies = data.data.filter((movie) => {
+          const title = movie.title.toLowerCase();
+          const overview = movie.overview.toLowerCase();
+
+          return (
+            title.includes(normalizedSearch) ||
+            overview.includes(normalizedSearch)
+          );
+        });
+
+        return {
+          movies: filteredMovies.slice(offset, offset + limit),
+          filteredCount: filteredMovies.length,
+        };
+      }
+
       return {
         movies: data.data,
-        filteredCount: data.filteredCount,
+        filteredCount:
+          data.filteredCount ?? data.totalAmount ?? data.data.length,
       };
     } catch (error) {
       return rejectWithValue(

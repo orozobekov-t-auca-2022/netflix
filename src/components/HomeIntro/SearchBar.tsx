@@ -1,17 +1,22 @@
 import { TextField } from '@mui/material';
 import SearchButton from './SearchButton';
-import { useState, type ChangeEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function SearchBar() {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e: ChangeEvent) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/?search=${encodeURIComponent(searchQuery.trim())}`);
+    const normalizedQuery = searchQuery.trim();
+
+    if (!normalizedQuery) {
+      navigate('/');
+      return;
     }
+
+    navigate(`/?search=${encodeURIComponent(normalizedQuery)}`);
   };
 
   return (
