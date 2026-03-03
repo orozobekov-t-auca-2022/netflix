@@ -225,7 +225,7 @@ function MovieForm({ mode }: { mode: 'create' | 'edit' }) {
                   label="rating"
                   placeholder="7.8"
                   type="number"
-                  // inputProps={{ min: 0.1, max: 10, step: 0.1 }}
+                  inputProps={{ min: 0.1, max: 10, step: 0.1 }}
                   value={String(formData.vote_average)}
                   error={isSubmitted && !!fieldErrors.vote_average}
                   helperText={isSubmitted ? fieldErrors.vote_average : ''}
