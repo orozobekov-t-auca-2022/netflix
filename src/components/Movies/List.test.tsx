@@ -27,6 +27,20 @@ function createMovie(id: number, title: string): MovieProps {
 }
 
 describe('List', () => {
+  test('renders loading state', () => {
+    render(<List movies={[]} loading />);
+
+    expect(screen.getByText('Loading...')).toBeTruthy();
+    expect(screen.queryAllByTestId('movie-tile')).toHaveLength(0);
+  });
+
+  test('renders error state', () => {
+    render(<List movies={[]} error="Failed request" />);
+
+    expect(screen.getByText('Error: Failed request')).toBeTruthy();
+    expect(screen.queryAllByTestId('movie-tile')).toHaveLength(0);
+  });
+
   test('renders a tile for each movie', () => {
     const movies = [createMovie(1, 'Movie A'), createMovie(2, 'Movie B')];
 

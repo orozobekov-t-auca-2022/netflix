@@ -32,11 +32,19 @@ function MovieDetails() {
   }, [dispatch, movieId, movie]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className={styles.movieDetails}>
+        <div className={styles.container}>Loading...</div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <div className={styles.movieDetails}>
+        <div className={styles.container}>Error: {error}</div>
+      </div>
+    );
   }
 
   if (!movie) {

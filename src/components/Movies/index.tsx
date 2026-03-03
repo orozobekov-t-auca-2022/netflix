@@ -75,18 +75,11 @@ function Movies() {
     setSearchParams(nextParams);
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
   return (
     <div className="moviesList">
       <FilterBar />
       <Count count={filteredCount ?? movies.length} />
-      <List movies={movies} />
+      <List movies={movies} loading={loading} error={error} />
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}

@@ -19,9 +19,22 @@ vi.mock('./Count', () => ({
 }));
 
 vi.mock('./List', () => ({
-  default: ({ movies }: { movies: MovieProps[] }) => (
-    <div data-testid="list">{String(movies.length)}</div>
-  ),
+  default: ({
+    movies,
+    loading,
+    error,
+  }: {
+    movies: MovieProps[];
+    loading?: boolean;
+    error?: string | null;
+  }) =>
+    loading ? (
+      <div data-testid="list">Loading...</div>
+    ) : error ? (
+      <div data-testid="list">Error: {error}</div>
+    ) : (
+      <div data-testid="list">{String(movies.length)}</div>
+    ),
 }));
 
 vi.mock('./Pagination', () => ({
@@ -119,7 +132,7 @@ describe('Movies', () => {
 
     renderMovies();
 
-    expect(screen.getByText('Loading...')).toBeTruthy();
+    expect(screen.getByTestId('list').textContent).toBe('Loading...');
   });
 
   test('renders error state', () => {
@@ -127,7 +140,9 @@ describe('Movies', () => {
 
     renderMovies();
 
-    expect(screen.getByText('Error: Failed request')).toBeTruthy();
+    expect(screen.getByTestId('list').textContent).toBe(
+      'Error: Failed request'
+    );
   });
 
   test('dispatches fetchMoviesThunk with URL params and page offset', () => {
