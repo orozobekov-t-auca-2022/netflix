@@ -98,7 +98,7 @@ describe('LoginForm', () => {
 
   test('does not navigate when login rejects', async () => {
     const user = userEvent.setup();
-    loginMock.mockRejectedValueOnce(new Error('Invalid credentials'));
+    loginMock.mockRejectedValueOnce(new Error('Invalid email or password'));
     render(<LoginForm />);
 
     await user.type(
@@ -110,5 +110,7 @@ describe('LoginForm', () => {
 
     expect(loginMock).toHaveBeenCalledWith('user@test.com', 'secret');
     expect(navigateMock).not.toHaveBeenCalled();
+    const alert = await screen.findByRole('alert');
+    expect(alert.textContent).toContain('Invalid email or password');
   });
 });

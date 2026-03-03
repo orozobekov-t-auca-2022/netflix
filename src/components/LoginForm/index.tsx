@@ -3,6 +3,7 @@ import ResetButton from './components/ResetButton';
 import LoginButton from './components/LoginButton';
 import EmailInput from './components/EmailInput';
 import PasswordInput from './components/PasswordInput';
+import Alert from '@mui/material/Alert';
 import { useState, type ChangeEvent, type SubmitEvent } from 'react';
 import { validateForm, type ValidationRules } from '../../utils/validation';
 import { useNavigate } from 'react-router-dom';
@@ -47,11 +48,19 @@ function LoginForm() {
         [name]: '',
       }));
     }
+
+    if (errors.form) {
+      setErrors((prev) => ({
+        ...prev,
+        form: '',
+      }));
+    }
   };
 
   const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
     setIsSubmitted(true);
+    setErrors((prev) => ({ ...prev, form: '' }));
     const newErrors: Record<string, string> = validateForm(
       formData,
       validationRules
@@ -119,6 +128,7 @@ function LoginForm() {
             />
           </label>
         </div>
+        {errors.form && <Alert severity="error">{errors.form}</Alert>}
         <div className={styles.buttons}>
           {loading && <span className={styles.loading}>Logging in...</span>}
           <ResetButton onClick={handleReset} />

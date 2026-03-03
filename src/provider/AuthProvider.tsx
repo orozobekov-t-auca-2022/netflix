@@ -23,7 +23,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
 
     if (!response.ok) {
-      throw new Error('Login failed');
+      let message = 'Login failed';
+
+      try {
+        const errorData = await response.json();
+
+        if (typeof errorData?.message === 'string') {
+          message = errorData.message;
+        }
+      } catch {
+        message = 'Login failed';
+      }
+
+      throw new Error(message);
     }
 
     const data = await response.json();
