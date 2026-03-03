@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './Header.module.css';
 import { type User } from '../../types/user';
+import { useAuth } from '../../provider/useAuth';
 
 function UserTooltip({
   onClick,
@@ -10,6 +11,7 @@ function UserTooltip({
   onClose: () => void;
 }) {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   let user: User | null = null;
   const storedUser = localStorage.getItem('user');
 
@@ -36,10 +38,9 @@ function UserTooltip({
         <li
           onClick={(e) => {
             e.stopPropagation();
-            localStorage.removeItem('user');
-            localStorage.removeItem('token');
+            logout();
             onClose();
-            navigate('/login');
+            navigate('/login', { replace: true });
           }}
         >
           Logout

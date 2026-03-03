@@ -104,6 +104,10 @@ describe('Header', () => {
 
   test('opens user menu and logs out', async () => {
     const user = userEvent.setup();
+    const logoutMock = vi.fn(() => {
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+    });
     localStorage.setItem('user', JSON.stringify({ name: 'Ivan' }));
     localStorage.setItem('token', 'token-value');
     mockedUseAuth.mockReturnValue({
@@ -116,7 +120,7 @@ describe('Header', () => {
       },
       token: 'token-value',
       login: vi.fn(),
-      logout: vi.fn(),
+      logout: logoutMock,
       isAdmin: false,
       isAuthenticated: true,
     });
@@ -128,8 +132,9 @@ describe('Header', () => {
 
     await user.click(screen.getByText('Logout'));
 
+    expect(logoutMock).toHaveBeenCalled();
     expect(localStorage.getItem('user')).toBeNull();
     expect(localStorage.getItem('token')).toBeNull();
-    expect(navigateMock).toHaveBeenCalledWith('/login');
+    expect(navigateMock).toHaveBeenCalledWith('/login', { replace: true });
   });
 });
