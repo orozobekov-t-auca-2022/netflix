@@ -25,9 +25,9 @@ vi.mock('../../provider/useAuth', () => ({
 
 const mockedUseAuth = vi.mocked(useAuth);
 
-function renderHeader() {
+function renderHeader(initialEntries: string[] = ['/']) {
   return render(
-    <MemoryRouter>
+    <MemoryRouter initialEntries={initialEntries}>
       <Header />
     </MemoryRouter>
   );
@@ -98,6 +98,28 @@ describe('Header', () => {
     });
 
     renderHeader();
+
+    expect(screen.queryByRole('button', { name: /add movie/i })).toBeNull();
+  });
+
+  test('does not show add movie button for admin on non-home routes', () => {
+    localStorage.setItem('user', JSON.stringify({ name: 'Admin User' }));
+    mockedUseAuth.mockReturnValue({
+      user: {
+        id: 4,
+        name: 'Admin User',
+        email: 'admin@test.com',
+        role: 'admin',
+        token: 'token',
+      },
+      token: 'token',
+      login: vi.fn(),
+      logout: vi.fn(),
+      isAdmin: true,
+      isAuthenticated: true,
+    });
+
+    renderHeader(['/123']);
 
     expect(screen.queryByRole('button', { name: /add movie/i })).toBeNull();
   });

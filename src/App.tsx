@@ -34,7 +34,7 @@ function App() {
           <Route
             path="/create-movie"
             element={
-              <PrivateRoute>
+              <PrivateRoute requiredRole="admin">
                 <MovieForm mode="create" />
               </PrivateRoute>
             }

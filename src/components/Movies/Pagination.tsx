@@ -17,7 +17,16 @@ function Pagination({ currentPage, totalPages, onChange }: PaginationProps) {
       <MuiPagination
         page={currentPage}
         count={totalPages}
-        color="primary"
+        variant="outlined"
+        sx={{
+          '& .MuiPaginationItem-root': {
+            color: 'var(--text-color)',
+          },
+          '& .MuiPaginationItem-root.Mui-selected': {
+            borderColor: 'var(--primary-color)',
+            color: 'var(--text-color)',
+          },
+        }}
         onChange={(_, page) => onChange(page)}
       />
     </div>

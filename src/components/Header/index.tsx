@@ -1,7 +1,7 @@
 import styles from './Header.module.css';
 import AddMovieButton from './AddMovieButton';
 import UserIconButton from './UserIconButton';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../provider/useAuth';
 import { useState } from 'react';
 import UserTooltip from './UserTooltip';
@@ -9,7 +9,9 @@ import UserTooltip from './UserTooltip';
 function Header() {
   const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const shouldShowAddMovieButton = isAdmin && location.pathname === '/';
 
   const goToAddMovieForm = () => {
     navigate('/create-movie');
@@ -23,7 +25,9 @@ function Header() {
           <span className={styles.roulette}>roulette</span>
         </Link>
         <div className={styles.buttons}>
-          {isAdmin && <AddMovieButton onClick={() => goToAddMovieForm()} />}
+          {shouldShowAddMovieButton && (
+            <AddMovieButton onClick={() => goToAddMovieForm()} />
+          )}
           {user && (
             <UserIconButton onClick={() => setShowUserMenu(!showUserMenu)} />
           )}
