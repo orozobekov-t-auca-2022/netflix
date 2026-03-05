@@ -1,0 +1,26 @@
+.footer{
+  background-color: rgba(66, 66, 66, 1);
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.netflix{
+  font-family: 'Montserrat', sans-serif;
+  color: var(--primary-color);
+  font-weight: 900;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0px;
+}
+.roulette{
+  font-family: 'Montserrat', sans-serif;
+  color: var(--primary-color);
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0px;
+}
+.logo {
+  text-decoration: none;
+}

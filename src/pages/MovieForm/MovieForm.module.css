@@ -1,0 +1,92 @@
+
+.buttons{
+  display: flex;
+  gap: 13px;
+}
+
+.movieFormPage{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 80px 0;
+  background-color: rgba(58, 58, 58, 1);
+}
+.movieFormContainer{
+  width: 976px;
+  height: 917px;
+  display: flex;
+  justify-content: center;
+  padding: 60px 0;
+  background-color: rgba(35, 35, 35, 1);
+  position: relative;
+}
+.movieForm{
+  width: 859px;
+  height: 917px;
+}
+.movieFormTitle{
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  font-size: 40px;
+  line-height: 100%;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 38px;
+}
+.movieFormInputs{
+  display: flex;
+  gap: 30px;
+}
+
+.leftColumn{
+  width: 525px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px
+}
+
+.rightColumn{
+  width: 301px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px
+}
+
+.overviewInput{
+  width: 100%;
+  margin: 30px 0 60px 0;
+}
+
+.inputField{
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+.inputLabel{
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0.89px;
+  text-transform: uppercase;
+  color: var(--primary-color);
+}
+.movieFormcloseIcon{
+  font-size: 21px;
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  cursor: pointer;
+}
+
+.buttonsWrapper{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.error{
+  color: rgba(255, 45, 85, 1);
+  font-weight: 400;
+  font-size: 12px;
+  text-transform: lowercase;
+}
